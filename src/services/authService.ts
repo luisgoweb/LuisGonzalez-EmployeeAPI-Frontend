@@ -1,6 +1,7 @@
 // src/services/authService.ts
 import axios from 'axios';
-import { type AuthResponse, authResponseSchema, type LoginSchemaType } from '../types';
+import { authResponseSchema } from '../schemas/loginSchema';
+import { type AuthResponse, type LoginSchemaType } from '../types';
 
 const API_URL = 'http://localhost:5146/api/auth/login';
 
