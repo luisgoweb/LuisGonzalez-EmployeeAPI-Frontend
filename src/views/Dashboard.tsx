@@ -13,12 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom"; // Importamos useNavigate
 import { deleteEmployee, getEmployees } from "../services/employeeService";
 import { useAuthStore } from "../store/authStore";
 import { useEmployeeStore } from "../store/employeeStore";
 import { type Employee } from "../types";
 
 const Dashboard = () => {
+  const navigate = useNavigate(); // Inicializamos el hook de navegación
   const { token, isAuthenticated } = useAuthStore();
   const { employees, setEmployees, removeEmployee } = useEmployeeStore();
 
@@ -40,8 +42,10 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, token]);
 
+  // Función para redirigir al formulario de edición
   const handleEdit = (employee: Employee) => {
-    console.log("Editando a:", employee.name);
+    // Redirige a la página de agregar empleado, pasando los datos del empleado en el state
+    navigate('/add-employee', { state: { employee } });
   };
 
   const handleDelete = async (employeeId: string) => {
@@ -49,9 +53,10 @@ const Dashboard = () => {
     try {
       await deleteEmployee(token, employeeId);
       removeEmployee(employeeId); // Eliminamos el empleado del estado local
-      console.log(`Empleado con ID ${employeeId} eliminado.`);
+      alert('Empleado eliminado exitosamente.'); // Mensaje de éxito
     } catch (error) {
       console.error("Error al eliminar el empleado:", error);
+      alert('Hubo un error al eliminar el empleado.'); // Mensaje de error
     }
   };
 
@@ -104,7 +109,7 @@ const Dashboard = () => {
                   <TableCell align="right">
                     <IconButton
                       color="primary"
-                      onClick={() => handleEdit(employee)}
+                      onClick={() => handleEdit(employee)} // Llamada a la función de edición
                     >
                       <EditIcon />
                     </IconButton>
