@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   IconButton,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -11,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from 'react';
@@ -22,12 +24,32 @@ import { type Employee } from "../types";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { token, isAuthenticated } = useAuthStore();
+  const { token, isAuthenticated, username } = useAuthStore();
   const { employees, setEmployees, removeEmployee } = useEmployeeStore();
 
   const [alert, setAlert] = useState<{ message: string; severity: "success" | "error" | "warning" } | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [page, setPage] = useState(1);
+  const employeesPerPage = 10;
 
-  // Función para obtener los empleados
+  // Filtramos los empleados basados en el término de búsqueda
+  const filteredEmployees = employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.department.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Lógica de paginación
+  const totalPages = Math.ceil(filteredEmployees.length / employeesPerPage);
+  const paginatedEmployees = filteredEmployees.slice(
+    (page - 1) * employeesPerPage,
+    page * employeesPerPage
+  );
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
   const fetchEmployees = async () => {
     if (!token) return;
     try {
@@ -36,11 +58,10 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error al obtener empleados:", error);
       const errorMessage = error instanceof Error ? error.message : 'Error al cargar los empleados.';
-      setAlert({ message: errorMessage, severity: 'warning' }); // Alerta de tipo warning
+      setAlert({ message: errorMessage, severity: 'warning' });
     }
   };
 
-  // Cargar los empleados al montar el componente y controlar la desaparición de la alerta
   useEffect(() => {
     if (isAuthenticated) {
       fetchEmployees();
@@ -51,7 +72,7 @@ const Dashboard = () => {
     if (alert) {
       const timer = setTimeout(() => {
         setAlert(null);
-      }, 3000); // La alerta desaparece después de 3 segundos
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [alert]);
@@ -65,44 +86,56 @@ const Dashboard = () => {
     try {
       await deleteEmployee(token, employeeId);
       removeEmployee(employeeId);
-      setAlert({ message: 'Empleado eliminado exitosamente.', severity: 'warning' }); // Alerta de tipo warning
+      setAlert({ message: 'Empleado eliminado exitosamente.', severity: 'warning' });
     } catch (error) {
       console.error("Error al eliminar el empleado:", error);
       const errorMessage = error instanceof Error ? error.message : 'Hubo un error al eliminar el empleado.';
-      setAlert({ message: errorMessage, severity: 'warning' }); // Alerta de tipo warning
+      setAlert({ message: errorMessage, severity: 'warning' });
     }
   };
 
   return (
     <Box sx={{ flexGrow: 1, p: { xs: 2, sm: 4 } }}>
-      {/* Encabezado con "Hola, admin" */}
+      {/* Encabezado con el nombre de usuario dinámico */}
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           alignItems: "center",
           mb: 4,
         }}
       >
         <Typography
+          variant="h5"
+          sx={{ color: "#0D314C", fontWeight: "bold" }}
+        >
+          Lista de Empleados
+        </Typography>
+        <Typography
           variant="body1"
           sx={{ color: "#0D314C", fontWeight: "bold" }}
         >
-          Hola, admin
+          Hola, {username || 'Admin'}
         </Typography>
       </Box>
 
-      {/* Alerta */}
       {alert && (
         <Alert severity={alert.severity} sx={{ mb: 2 }}>
           {alert.message}
         </Alert>
       )}
 
-      {/* Lista de Empleados en formato de tabla */}
-      <Typography variant="h5" sx={{ mb: 2, color: "#0D314C" }}>
-        Lista de Empleados
-      </Typography>
+      {/* Campo de búsqueda */}
+      <Box sx={{ mb: 3 }}>
+        <TextField
+          fullWidth
+          label="Buscar por nombre, posición o departamento"
+          variant="outlined"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
+
       {employees.length === 0 ? (
         <Typography variant="body1" align="center" sx={{ mt: 4 }}>
           Aún no hay empleados. Usa el formulario para comenzar a añadir empleados.
@@ -120,7 +153,7 @@ const Dashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {employees.map((employee) => (
+              {paginatedEmployees.map((employee) => (
                 <TableRow key={employee.id}>
                   <TableCell>{employee.name}</TableCell>
                   <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>{employee.email}</TableCell>
@@ -145,6 +178,18 @@ const Dashboard = () => {
             </TableBody>
           </Table>
         </TableContainer>
+      )}
+      
+      {/* Paginador */}
+      {filteredEmployees.length > employeesPerPage && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
       )}
     </Box>
   );
