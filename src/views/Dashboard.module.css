@@ -1,104 +1,89 @@
 /* Colores de la paleta */
 .dashboardContainer {
-    background-color: #d8e2e8;
-    padding: 2rem;
-    min-height: 100vh;
-  }
-  
-  .dashboardHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .headerTitle {
-    color: #0d314c;
-    font-weight: bold;
-  }
-  
-  .headerUser {
-    color: #0d314c;
-  }
-  
-  /* Estilos de la grilla de widgets */
+  background-color: #d8e2e8;
+  padding: 2rem;
+  min-height: 100vh;
+}
+ .dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+ .headerTitle {
+  color: #0d314c;
+  font-weight: bold;
+}
+ .headerUser {
+  color: #0d314c;
+}
+ /* Estilos de la grilla de widgets */
+.widgetsGrid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+ .widgetCard {
+  background-color: #f9fbfd;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+ .widgetTitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0d314c;
+}
+ .widgetValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1d9a94;
+  margin-top: 0.5rem;
+}
+ .widgetLargeValue {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1d9a94;
+  margin-top: 0.5rem;
+}
+ /* Tarjetas con colores especiales */
+.darkCard {
+  background-color: #0d314c;
+  color: #fff;
+  grid-column: span 1;
+}
+ .darkCardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+ .darkCardSubtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+ .greenCard {
+  background-color: #1d9a94;
+  color: #fff;
+  grid-column: span 1;
+}
+ .greenCardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+ /* Estilo para que la tabla de empleados ocupe todo el ancho */
+.fullWidthWidget {
+  grid-column: 1 / -1; /* Ocupa de la primera a la última columna */
+}
+ /* Media Query para pantallas más grandes */
+@media (min-width: 900px) {
   .widgetsGrid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  .widgetCard {
-    background-color: #f9fbfd;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .widgetTitle {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #0d314c;
-  }
-  
-  .widgetValue {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #1d9a94;
-    margin-top: 0.5rem;
-  }
-  
-  .widgetLargeValue {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #1d9a94;
-    margin-top: 0.5rem;
-  }
-  
-  /* Tarjetas con colores especiales */
   .darkCard {
-    background-color: #0d314c;
-    color: #fff;
-    grid-column: span 1;
+    grid-column: span 2;
   }
-  
-  .darkCardTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-  
-  .darkCardSubtitle {
-    font-size: 0.8rem;
-    opacity: 0.8;
-  }
-  
   .greenCard {
-    background-color: #1d9a94;
-    color: #fff;
     grid-column: span 1;
   }
-  
-  .greenCardTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-  
-  /* Estilo para que la tabla de empleados ocupe todo el ancho */
-  .fullWidthWidget {
-    grid-column: 1 / -1; /* Ocupa de la primera a la última columna */
-  }
-  
-  /* Media Query para pantallas más grandes */
-  @media (min-width: 900px) {
-    .widgetsGrid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .darkCard {
-      grid-column: span 2;
-    }
-    .greenCard {
-      grid-column: span 1;
-    }
-  }
+}
