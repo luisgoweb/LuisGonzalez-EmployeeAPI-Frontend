@@ -1,7 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import {
+  Box,
   Button,
   Grid,
+  IconButton,
   Paper,
   TextField,
   Typography,
@@ -54,10 +59,13 @@ export const Login = () => {
       }}
     >
       <Paper elevation={5} sx={{ padding: 8, width: '400px' }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center">
-          Iniciar Sesión
+        <Typography sx={{fontSize: 20, fontWeight: 600, pb:3}} variant="h4" component="h4" gutterBottom align="center">
+          Bienvenido al Sistema de Gestión de Empleados
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography sx={{fontSize: 14}} variant="h4" component="h4" gutterBottom align="center">
+          Ingresa con tu usuario y contraseña de administrador
+        </Typography>
+        <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             margin="normal"
@@ -83,7 +91,25 @@ export const Login = () => {
           >
             Ingresar
           </Button>
-        </form>
+          <Box
+            sx={{
+              display: 'flex',          // 1. Usa Flexbox para alinear los hijos
+              justifyContent: 'center',  // 2. Centra los botones horizontalmente
+              gap: 2,                   // 3. Añade un espacio entre los botones
+              mt: 2,                    // 4. Añade un margen superior para separarlo del formulario
+            }}
+          >
+          <IconButton aria-label="facebook">
+            <FacebookIcon />
+          </IconButton>
+          <IconButton aria-label="instagram">
+            <InstagramIcon />
+          </IconButton>
+          <IconButton aria-label="linkedin">
+            <LinkedInIcon />
+          </IconButton>
+        </Box>
+        </Box>
       </Paper>
     </Grid>
   );
