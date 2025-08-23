@@ -1,4 +1,3 @@
-// src/components/Login.tsx
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -18,7 +17,8 @@ import { type LoginSchemaType } from '../types';
 
 export const Login = () => {
   const navigate = useNavigate();
-  const setToken = useAuthStore((state) => state.setToken);
+  // Obtiene la nueva función setAuthData del store
+  const setAuthData = useAuthStore((state) => state.setAuthData);
 
   const {
     register,
@@ -31,8 +31,8 @@ export const Login = () => {
   const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
     try {
       const response = await login(data);
-      // Guardamos el token en Zustand y localStorage
-      setToken(response.token);
+      // Llama a la nueva función para guardar el token Y el nombre de usuario
+      setAuthData(response.token, response.username); 
       // Redirigimos al dashboard
       navigate('/employees');
     } catch (error) {
