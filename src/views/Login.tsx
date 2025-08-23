@@ -8,31 +8,37 @@ import {
   Typography,
 } from '@mui/material';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 
-// Define el esquema de validación con Zod
-const loginSchema = z.object({
-  username: z.string().min(1, 'El nombre de usuario es obligatorio.'),
-  password: z.string().min(1, 'La contraseña es obligatoria.'),
-});
-
-// Infiere el tipo del esquema para usarlo en el formulario
-type LoginSchemaType = z.infer<typeof loginSchema>;
+// Importaciones de los nuevos archivos
+import { loginSchema } from '../schemas/loginSchema';
+import { login } from '../services/authService';
+import { useAuthStore } from '../store/authStore';
+import { type LoginSchemaType } from '../types';
 
 export const Login = () => {
-  // Usa el hook useForm para manejar el formulario y la validación
+  const navigate = useNavigate();
+  const setToken = useAuthStore((state) => state.setToken);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginSchemaType>({
-    resolver: zodResolver(loginSchema), // Conecta el esquema de Zod
+    resolver: zodResolver(loginSchema),
   });
 
-  // Manejador del envío del formulario (se ejecuta solo si es válido)
-  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
-    console.log('Datos del formulario validados:', data);
-    // Aquí iría tu lógica de login (petición a la API, etc.)
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
+    try {
+      const response = await login(data);
+      // Guardamos el token en Zustand y localStorage
+      setToken(response.token);
+      // Redirigimos al dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error en el login:', error);
+      alert('Error en el login. Por favor, revisa tus credenciales.');
+    }
   };
 
   return (
@@ -56,9 +62,7 @@ export const Login = () => {
             fullWidth
             margin="normal"
             label="Nombre de usuario"
-            // Vincula el campo con React Hook Form
             {...register('username')}
-            // Aplica el estilo de error de Material-UI y muestra el mensaje
             error={!!errors.username}
             helperText={errors.username?.message}
           />
@@ -67,9 +71,7 @@ export const Login = () => {
             margin="normal"
             label="Contraseña"
             type="password"
-            // Vincula el campo con React Hook Form
             {...register('password')}
-            // Aplica el estilo de error y muestra el mensaje
             error={!!errors.password}
             helperText={errors.password?.message}
           />
