@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import { employeeFormSchema } from "../schemas/employeeSchema";
@@ -12,6 +13,8 @@ const AddEmployee = () => {
   const location = useLocation();
   const token = useAuthStore((state) => state.token);
   const employeeToEdit = location.state?.employee as Employee | undefined;
+
+  const [alert, setAlert] = useState<{ message: string; severity: "success" | "error" } | null>(null);
 
   const {
     register,
@@ -27,18 +30,19 @@ const AddEmployee = () => {
 
     try {
       if (employeeToEdit) {
-        // Modo de edición
         await updateEmployee(token, employeeToEdit.id, data);
-        alert('Empleado actualizado exitosamente.');
+        setAlert({ message: 'Empleado actualizado exitosamente.', severity: 'success' });
       } else {
-        // Modo de creación
         await createEmployee(token, data);
-        alert('Empleado creado exitosamente.');
+        setAlert({ message: 'Empleado creado exitosamente.', severity: 'success' });
       }
-      navigate('/employees');
+      setTimeout(() => {
+        navigate('/employees');
+      }, 2000); // Espera 2 segundos antes de redirigir
     } catch (error) {
       console.error('Error al guardar el empleado:', error);
-      alert('Hubo un error al guardar el empleado.');
+      const errorMessage = error instanceof Error ? error.message : 'Hubo un error al guardar el empleado.';
+      setAlert({ message: errorMessage, severity: 'error' });
     }
   };
 
@@ -47,6 +51,11 @@ const AddEmployee = () => {
       <Typography variant="h4" gutterBottom>
         {employeeToEdit ? 'Actualizar Empleado' : 'Añadir Empleado'}
       </Typography>
+      {alert && (
+        <Alert severity={alert.severity} sx={{ mb: 2 }}>
+          {alert.message}
+        </Alert>
+      )}
       <Paper elevation={5} sx={{ p: 4, mt: 4 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
