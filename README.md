@@ -1,69 +1,55 @@
-# React + TypeScript + Vite
+Este es un proyecto de gestión de empleados desarrollado como una prueba técnica. La aplicación implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) y cuenta con un sistema de autenticación seguro basado en tokens. La interfaz de usuario es intuitiva y está diseñada para una experiencia de usuario fluida.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tecnologías Utilizadas
+El proyecto se construyó utilizando las siguientes tecnologías clave:
 
-Currently, two official plugins are available:
+Vite: Un bundler rápido para desarrollo frontend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React: Biblioteca de JavaScript para construir interfaces de usuario.
 
-## Expanding the ESLint configuration
+TypeScript: Lenguaje de programación que añade tipado estático a JavaScript, mejorando la robustez del código.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Zod: Biblioteca de validación de esquemas que asegura la integridad de los datos.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Zustand: Un gestor de estado minimalista y flexible para manejar el estado de la aplicación.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Material-UI (MUI): Un framework de diseño para componentes de React que proporciona un look and feel profesional.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+CSS Modules: Para encapsular los estilos de cada componente y evitar conflictos.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Axios: Un cliente HTTP para realizar peticiones a la API.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+React Hook Form: Para manejar los formularios de manera eficiente y con validaciones robustas.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Cómo Correr el Proyecto
+Para poner en marcha el proyecto, sigue estos sencillos pasos:
+
+Clona el repositorio:
+
+Bash
+
+git clone https://github.com/luisgoweb/LuisGonz-lez-EmployeeAPI-Frontend.git
+Instala las dependencias: Navega al directorio del proyecto y ejecuta el siguiente comando.
+
+Bash
+
+npm install
+Corre el proyecto en modo de desarrollo:
+
+Bash
+
+npm run dev
+El proyecto se iniciará en tu navegador por defecto.
+
+Diseño y Decisiones Clave
+Las decisiones de diseño y arquitectura se tomaron con el objetivo de crear una aplicación robusta, escalable y fácil de mantener.
+
+Gestión de Estado Centralizada: Se eligió Zustand para gestionar el estado de la autenticación (token, nombre de usuario) y la lista de empleados. Esta decisión nos permitió evitar el "prop drilling" y mantener la información crítica accesible desde cualquier componente.
+
+Validación de Datos Completa: La combinación de React Hook Form y Zod fue crucial. React Hook Form maneja el ciclo de vida del formulario de manera eficiente, mientras que Zod se encarga de la validación del esquema de datos tanto en el frontend como en las respuestas de la API, proporcionando una capa extra de seguridad y consistencia.
+
+Arquitectura Modular: El código se estructuró en directorios lógicos (components, services, schemas, store, types). Esto separa las responsabilidades de cada parte de la aplicación (UI, lógica de negocio, validación), lo que facilita la lectura y el mantenimiento del código.
+
+Manejo de la Seguridad: La autenticación se maneja a través de tokens, los cuales se almacenan en el localStorage para persistencia. Cada petición a la API que requiere autorización se realiza con el token, asegurando que solo los usuarios autenticados puedan acceder a los recursos.
+
+Experiencia de Usuario: Se priorizó una UX intuitiva. El Dashboard incluye funcionalidades como búsqueda dinámica y paginación, lo que permite una gestión eficiente de un gran número de empleados. Las alertas de Material-UI se utilizan para proporcionar retroalimentación visual al usuario de manera elegante, reemplazando las alertas nativas del navegador.
