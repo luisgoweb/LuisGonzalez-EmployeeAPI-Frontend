@@ -1,7 +1,7 @@
 // src/services/employee.service.ts
 import axios from 'axios';
 import { employeesArraySchema } from '../schemas/employeeSchema';
-import { type Employee } from '../types';
+import { type Employee, type EmployeeFormType } from '../types';
 
 const API_URL = 'http://localhost:5146/api/employee';
 
@@ -48,3 +48,42 @@ export const deleteEmployee = async (token: string, employeeId: string): Promise
     throw new Error('Error inesperado.');
   }
 };
+
+export const createEmployee = async (token: string, employeeData: EmployeeFormType): Promise<Employee> => {
+    try {
+      const response = await axios.post<Employee>(API_URL, employeeData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Error al crear el empleado.');
+      }
+      throw new Error('Error inesperado.');
+    }
+  };
+  
+  /**
+   * Actualiza un empleado existente.
+   * @param token Token de autenticación del usuario.
+   * @param employeeId ID del empleado a actualizar.
+   * @param employeeData Datos actualizados del empleado.
+   * @returns El empleado actualizado.
+   */
+  export const updateEmployee = async (token: string, employeeId: string, employeeData: EmployeeFormType): Promise<Employee> => {
+    try {
+      const response = await axios.put<Employee>(`${API_URL}/${employeeId}`, employeeData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Error al actualizar el empleado.');
+      }
+      throw new Error('Error inesperado.');
+    }
+  };
