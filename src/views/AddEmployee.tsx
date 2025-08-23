@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -47,7 +47,7 @@ const AddEmployee = () => {
   };
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Grid   sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
         {employeeToEdit ? 'Actualizar Empleado' : 'Añadir Empleado'}
       </Typography>
@@ -56,8 +56,11 @@ const AddEmployee = () => {
           {alert.message}
         </Alert>
       )}
-      <Paper elevation={5} sx={{ p: 4, mt: 4 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <Paper elevation={5} sx={{ maxWidth: 600, p: 4, mt: 4 }}>
+        <Box component={"form"} 
+        
+        onSubmit={handleSubmit(onSubmit)}
+        >
           <TextField
             fullWidth
             margin="normal"
@@ -115,9 +118,9 @@ const AddEmployee = () => {
           >
             {employeeToEdit ? 'Actualizar' : 'Crear'} Empleado
           </Button>
-        </form>
+        </Box>
       </Paper>
-    </Box>
+    </Grid>
   );
 };
 
