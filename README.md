@@ -62,4 +62,4 @@ luisgocodev@gmail.com
 
 [Portafolio](https://www.luisgodev.cl/)
 
-[LinkedIn](https://www.linkedin.com/in/luis-gonzalez-dev-full-stack/)
+[Linkedin](https://www.linkedin.com/in/luis-gonzalez-dev-full-stack/)
