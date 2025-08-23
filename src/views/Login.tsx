@@ -34,7 +34,7 @@ export const Login = () => {
       // Guardamos el token en Zustand y localStorage
       setToken(response.token);
       // Redirigimos al dashboard
-      navigate('/dashboard');
+      navigate('/employees');
     } catch (error) {
       console.error('Error en el login:', error);
       alert('Error en el login. Por favor, revisa tus credenciales.');
