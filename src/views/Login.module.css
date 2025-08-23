@@ -1,0 +1,118 @@
+/* Variables de colores y tipografía */
+:root {
+    --primary-color: #2e6ff7; /* Azul corporativo */
+    --secondary-color: #1a237e; /* Azul oscuro */
+    --light-bg: #f5f6fa;
+    --form-bg: #ffffff;
+    --text-color: #333;
+    --font-family: 'Inter', sans-serif; /* Tipografía más moderna */
+  }
+  
+  /* Estilos globales para la página */
+  .registerPage {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--light-bg);
+    font-family: var(--font-family);
+  }
+  
+  /* Sección de la imagen (solo en desktop) */
+  .imageSection {
+    display: none; /* Oculto por defecto en móvil */
+    position: relative;
+    flex: 0 0 50%; /* Ocupa exactamente el 50% del ancho */
+    background-image: url("/register-bg.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(46, 111, 247, 0.2); /* Overlay azul */
+  }
+  
+  /* Sección del formulario (responsive) */
+  .formSection {
+    flex: 1; /* Ocupa el espacio restante */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--light-bg);
+  }
+  
+  .formContainer {
+    background-color: var(--form-bg);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .formHeader {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+  }
+  
+  .loginLink {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .title {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  .subtitle {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+  }
+  
+  .textField {
+    margin-bottom: 1.5rem !important; /* Aumenta el espaciado entre campos */
+  }
+  
+  .submitButton {
+    margin-top: 1rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 82, 163, 0.3);
+  }
+  
+  .submitButton:hover {
+    background-color: #004182;
+  }
+  
+  .terms {
+    color: #7f8c8d;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Media Queries para desktop */
+  @media (min-width: 900px) {
+    .registerPage {
+      justify-content: center;
+    }
+    .imageSection {
+      display: block; /* Visible en desktop */
+    }
+    .formSection {
+      flex: 0 0 50%; /* Ocupa el otro 50% */
+    }
+    .formContainer {
+      box-shadow: none; /* Elimina la sombra en desktop */
+    }
+  }
