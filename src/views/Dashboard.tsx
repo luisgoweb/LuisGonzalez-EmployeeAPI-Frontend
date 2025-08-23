@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
+  Alert,
   Box,
   IconButton,
   Paper,
@@ -12,17 +13,19 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom"; // Importamos useNavigate
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { deleteEmployee, getEmployees } from "../services/employeeService";
 import { useAuthStore } from "../store/authStore";
 import { useEmployeeStore } from "../store/employeeStore";
 import { type Employee } from "../types";
 
 const Dashboard = () => {
-  const navigate = useNavigate(); // Inicializamos el hook de navegación
+  const navigate = useNavigate();
   const { token, isAuthenticated } = useAuthStore();
   const { employees, setEmployees, removeEmployee } = useEmployeeStore();
+
+  const [alert, setAlert] = useState<{ message: string; severity: "success" | "error" | "warning" } | null>(null);
 
   // Función para obtener los empleados
   const fetchEmployees = async () => {
@@ -32,19 +35,28 @@ const Dashboard = () => {
       setEmployees(fetchedEmployees);
     } catch (error) {
       console.error("Error al obtener empleados:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Error al cargar los empleados.';
+      setAlert({ message: errorMessage, severity: 'warning' }); // Alerta de tipo warning
     }
   };
 
-  // Cargar los empleados al montar el componente
+  // Cargar los empleados al montar el componente y controlar la desaparición de la alerta
   useEffect(() => {
     if (isAuthenticated) {
       fetchEmployees();
     }
   }, [isAuthenticated, token]);
 
-  // Función para redirigir al formulario de edición
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null);
+      }, 3000); // La alerta desaparece después de 3 segundos
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
   const handleEdit = (employee: Employee) => {
-    // Redirige a la página de agregar empleado, pasando los datos del empleado en el state
     navigate('/add-employee', { state: { employee } });
   };
 
@@ -52,11 +64,12 @@ const Dashboard = () => {
     if (!token) return;
     try {
       await deleteEmployee(token, employeeId);
-      removeEmployee(employeeId); // Eliminamos el empleado del estado local
-      alert('Empleado eliminado exitosamente.'); // Mensaje de éxito
+      removeEmployee(employeeId);
+      setAlert({ message: 'Empleado eliminado exitosamente.', severity: 'warning' }); // Alerta de tipo warning
     } catch (error) {
       console.error("Error al eliminar el empleado:", error);
-      alert('Hubo un error al eliminar el empleado.'); // Mensaje de error
+      const errorMessage = error instanceof Error ? error.message : 'Hubo un error al eliminar el empleado.';
+      setAlert({ message: errorMessage, severity: 'warning' }); // Alerta de tipo warning
     }
   };
 
@@ -78,6 +91,13 @@ const Dashboard = () => {
           Hola, admin
         </Typography>
       </Box>
+
+      {/* Alerta */}
+      {alert && (
+        <Alert severity={alert.severity} sx={{ mb: 2 }}>
+          {alert.message}
+        </Alert>
+      )}
 
       {/* Lista de Empleados en formato de tabla */}
       <Typography variant="h5" sx={{ mb: 2, color: "#0D314C" }}>
@@ -109,7 +129,7 @@ const Dashboard = () => {
                   <TableCell align="right">
                     <IconButton
                       color="primary"
-                      onClick={() => handleEdit(employee)} // Llamada a la función de edición
+                      onClick={() => handleEdit(employee)}
                     >
                       <EditIcon />
                     </IconButton>
