@@ -1,41 +1,38 @@
 // src/components/Login.tsx
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   Grid,
   Paper,
   TextField,
   Typography,
-  useTheme
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
 
-// Define el tipo para los datos del formulario
-interface LoginData {
-  username: string;
-  password: string;
-}
+// Define el esquema de validación con Zod
+const loginSchema = z.object({
+  username: z.string().min(1, 'El nombre de usuario es obligatorio.'),
+  password: z.string().min(1, 'La contraseña es obligatoria.'),
+});
+
+// Infiere el tipo del esquema para usarlo en el formulario
+type LoginSchemaType = z.infer<typeof loginSchema>;
 
 export const Login = () => {
-  const theme = useTheme();
-  const [formData, setFormData] = useState<LoginData>({
-    username: '',
-    password: '',
+  // Usa el hook useForm para manejar el formulario y la validación
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema), // Conecta el esquema de Zod
   });
 
-  // Maneja los cambios en los campos del formulario
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Maneja el envío del formulario
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Datos del formulario:', formData);
-    // Aquí iría la lógica para enviar los datos a la API
-    // Por ahora, solo se muestran en la consola
+  // Manejador del envío del formulario (se ejecuta solo si es válido)
+  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
+    console.log('Datos del formulario validados:', data);
+    // Aquí iría tu lógica de login (petición a la API, etc.)
   };
 
   return (
@@ -48,32 +45,33 @@ export const Login = () => {
         backgroundImage:
           'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 80%), hsl(0, 0%, 100%))',
         backgroundRepeat: 'no-repeat'
-
       }}
     >
       <Paper elevation={5} sx={{ padding: 8, width: '400px' }}>
         <Typography variant="h4" component="h1" gutterBottom align="center">
           Iniciar Sesión
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             margin="normal"
             label="Nombre de usuario"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
+            // Vincula el campo con React Hook Form
+            {...register('username')}
+            // Aplica el estilo de error de Material-UI y muestra el mensaje
+            error={!!errors.username}
+            helperText={errors.username?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             label="Contraseña"
             type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
+            // Vincula el campo con React Hook Form
+            {...register('password')}
+            // Aplica el estilo de error y muestra el mensaje
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <Button
             type="submit"
