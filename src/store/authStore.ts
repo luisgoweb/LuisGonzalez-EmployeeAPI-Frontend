@@ -1,4 +1,3 @@
-// src/store/authStore.ts
 import { create } from 'zustand';
 
 // Función para obtener el token y el nombre de usuario del localStorage

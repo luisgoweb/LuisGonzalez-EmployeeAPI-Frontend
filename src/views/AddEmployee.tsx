@@ -38,7 +38,7 @@ const AddEmployee = () => {
       }
       setTimeout(() => {
         navigate('/employees');
-      }, 2000); // Espera 2 segundos antes de redirigir
+      }, 2000); 
     } catch (error) {
       console.error('Error al guardar el empleado:', error);
       const errorMessage = error instanceof Error ? error.message : 'Hubo un error al guardar el empleado.';

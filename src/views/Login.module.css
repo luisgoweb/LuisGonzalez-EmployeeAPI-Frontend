@@ -1,11 +1,11 @@
-/* Variables de colores y tipografía */
+
 :root {
-    --primary-color: #2e6ff7; /* Azul corporativo */
-    --secondary-color: #1a237e; /* Azul oscuro */
+    --primary-color: #2e6ff7; 
+    --secondary-color: #1a237e; 
     --light-bg: #f5f6fa;
     --form-bg: #ffffff;
     --text-color: #333;
-    --font-family: 'Inter', sans-serif; /* Tipografía más moderna */
+    --font-family: 'Roboto', sans-serif; 
   }
   
   /* Estilos globales para la página */
@@ -16,7 +16,7 @@
     font-family: var(--font-family);
   }
   
-  /* Sección de la imagen (solo en desktop) */
+ 
   .imageSection {
     display: none; /* Oculto por defecto en móvil */
     position: relative;
@@ -32,12 +32,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(46, 111, 247, 0.2); /* Overlay azul */
+    background-color: rgba(46, 111, 247, 0.2);
   }
   
   /* Sección del formulario (responsive) */
   .formSection {
-    flex: 1; /* Ocupa el espacio restante */
+    flex: 1; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +78,7 @@
   }
   
   .textField {
-    margin-bottom: 1.5rem !important; /* Aumenta el espaciado entre campos */
+    margin-bottom: 1.5rem !important; 
   }
   
   .submitButton {
@@ -107,12 +107,12 @@
       justify-content: center;
     }
     .imageSection {
-      display: block; /* Visible en desktop */
+      display: block; 
     }
     .formSection {
-      flex: 0 0 50%; /* Ocupa el otro 50% */
+      flex: 0 0 50%; 
     }
     .formContainer {
-      box-shadow: none; /* Elimina la sombra en desktop */
+      box-shadow: none; 
     }
   }

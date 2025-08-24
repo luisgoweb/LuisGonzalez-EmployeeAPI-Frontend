@@ -1,15 +1,10 @@
-// src/services/employee.service.ts
 import axios from 'axios';
 import { employeesArraySchema } from '../schemas/employeeSchema';
 import { type Employee, type EmployeeFormType } from '../types';
 
 const API_URL = 'http://localhost:5146/api/employee';
 
-/**
- * Obtiene la lista de empleados desde la API.
- * @param token Token de autenticación del usuario.
- * @returns Lista de empleados.
- */
+
 export const getEmployees = async (token: string): Promise<Employee[]> => {
   try {
     const response = await axios.get(API_URL, {
@@ -29,11 +24,7 @@ export const getEmployees = async (token: string): Promise<Employee[]> => {
   }
 };
 
-/**
- * Elimina un empleado de la API.
- * @param token Token de autenticación del usuario.
- * @param employeeId ID del empleado a eliminar.
- */
+
 export const deleteEmployee = async (token: string, employeeId: string): Promise<void> => {
   try {
     await axios.delete(`${API_URL}/${employeeId}`, {
@@ -65,13 +56,7 @@ export const createEmployee = async (token: string, employeeData: EmployeeFormTy
     }
   };
   
-  /**
-   * Actualiza un empleado existente.
-   * @param token Token de autenticación del usuario.
-   * @param employeeId ID del empleado a actualizar.
-   * @param employeeData Datos actualizados del empleado.
-   * @returns El empleado actualizado.
-   */
+ 
   export const updateEmployee = async (token: string, employeeId: string, employeeData: EmployeeFormType): Promise<Employee> => {
     try {
       const response = await axios.put<Employee>(`${API_URL}/${employeeId}`, employeeData, {
