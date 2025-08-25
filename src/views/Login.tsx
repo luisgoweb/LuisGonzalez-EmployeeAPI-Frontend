@@ -53,8 +53,8 @@ export const Login = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundImage:
-          'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 80%), hsl(0, 0%, 100%))',
+        backgroundColor:
+          '#0d314c',
         backgroundRepeat: 'no-repeat'
       }}
     >
@@ -93,19 +93,19 @@ export const Login = () => {
           </Button>
           <Box
             sx={{
-              display: 'flex',          // 1. Usa Flexbox para alinear los hijos
-              justifyContent: 'center',  // 2. Centra los botones horizontalmente
-              gap: 2,                   // 3. Añade un espacio entre los botones
-              mt: 2,                    // 4. Añade un margen superior para separarlo del formulario
+              display: 'flex',          
+              justifyContent: 'center',  
+              gap: 2,                   
+              mt: 2,                    
             }}
           >
-          <IconButton aria-label="facebook">
+          <IconButton sx={{color:'#0d314c'}} aria-label="facebook">
             <FacebookIcon />
           </IconButton>
-          <IconButton aria-label="instagram">
+          <IconButton sx={{color:'#0d314c'}} aria-label="instagram">
             <InstagramIcon />
           </IconButton>
-          <IconButton aria-label="linkedin">
+          <IconButton sx={{color:'#0d314c'}} aria-label="linkedin">
             <LinkedInIcon />
           </IconButton>
         </Box>
